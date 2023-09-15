@@ -36,6 +36,7 @@ class ApiFeatures {
   }
 
   pagination(resultPerPage) {
+    // user write page number 2 or total jo products hn wo agr 5 hn to pehle page wli 5 skip krni hn  to yh formula lga lo resultPerPage * (currentPage - 1);
     const currentPage = Number(this.queryStr.page) || 1;
 
     const skip = resultPerPage * (currentPage - 1);

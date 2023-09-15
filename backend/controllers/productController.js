@@ -5,28 +5,15 @@ const catchAsyncError = require("../middlewares/catchAsyncError");
 /// create Product POST
 
 const createProduct = catchAsyncError(async (req, res, next) => {
-  const product = await ProductModel.create(req.body);
+  const products = await ProductModel.create(req.body);
   res.status(201).json({
     success: true,
-    product,
+    products,
   });
 });
 
-// GET All Products  ADMIN
-
-// const getAllProducts = catchAsyncError(async (req, res) => {
-//   const searchQuery = req.query.name || "";
-//   const products = await ProductModel.find();
-//   // name: { $regex: searchQuery, $options: "i" },
-//   console.log(products);
-//   res.status(200).json({
-//     success: true,
-//     products,
-//   });
-// });
-
 const getAllProducts = catchAsyncError(async (req, res) => {
-  const resultPerPage = 10;
+  const resultPerPage = 5;
   const apifeature = new ApiFeatures(ProductModel.find(), req.query)
     .search()
     .filter()
@@ -36,11 +23,56 @@ const getAllProducts = catchAsyncError(async (req, res) => {
   res.status(200).json({
     success: true,
     products,
+    resultPerPage,
   });
 });
 
-// Update   Products  ADMIN
+///
+// let page = Number(req.query.page) || 1;
+// let limit = Number(req.query.limit) || 3;
 
+// GET All Products  ADMIN
+// const getAllProducts = async (req, res) => {
+//   try {
+//     const keyword = req.query.name || "";
+
+//     if (!keyword) {
+//       return res.status(200).json({
+//         success: true,
+//       });
+//     }
+
+//     const products = await ProductModel.find({
+//       name: { $regex: keyword, $options: "i" },
+//     });
+
+//     res.status(200).json({
+//       success: true,
+//       products,
+//     });
+//   } catch (error) {
+//     // Handle errors, e.g., send an error response
+//     res.status(500).json({
+//       success: false,
+//       error: "Internal Server Error",
+//     });
+//   }
+// };
+
+// Search for products
+// const getAllProducts = catchAsyncError(async (req, res) => {
+//   const keyword = req.query.name || "";
+
+//   const products = await ProductModel.find({
+//     name: { $regex: keyword, $options: "i" },
+//   });
+//   res.status(200).json({
+//     success: true,
+//     products,
+//   });
+// });
+
+// Update   Products  ADMIN
 // const updateProduct = async (req, res, next) => {
 //   let product = await ProductModel.findById(req.params.id);
 //   if (!product) {
@@ -64,8 +96,8 @@ const getAllProducts = catchAsyncError(async (req, res) => {
 //     success: true,
 //     message: "Product updated successfully",
 //     product: updateProduct,
-//   })
-// }
+//   });
+// };
 
 // Update Product
 const updateProduct = catchAsyncError(async (req, res, next) => {
@@ -120,6 +152,8 @@ const deleteProduct = catchAsyncError(async (req, res, next) => {
 /// GET Product Detail
 const getProductDetail = catchAsyncError(async (req, res, next) => {
   const product = await ProductModel.findById(req.params.id);
+  console.log(product);
+
   if (!product) {
     res.status(404).json({
       success: false,
@@ -134,6 +168,7 @@ const getProductDetail = catchAsyncError(async (req, res, next) => {
 
 module.exports = {
   getAllProducts,
+  // searchProducts,
   createProduct,
   updateProduct,
   deleteProduct,

@@ -12,6 +12,7 @@ const validator = require("validator");
 const createUser = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
+    console.log("name", req.body);
     // Check if the email already exists
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
@@ -20,8 +21,10 @@ const createUser = async (req, res, next) => {
         message: "Email already exists",
       });
     }
+    const salt = await bcrypt.genSalt(10);
+    console.log("salt", salt);
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, salt);
     const user = await UserModel.create({
       name,
       email,
@@ -31,14 +34,10 @@ const createUser = async (req, res, next) => {
     // Save the user to the database
     await user.save();
 
-    // res.status(201).json({
-    //   success: true,
-    //   message: "Registration successful",
-    // });
     sendCookie(user, res, "User is created successfully");
   } catch (error) {
     console.error(error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Internal server error",
     });
@@ -51,6 +50,7 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await UserModel.findOne({ email }).select("+password");
+    // const user = await UserModel.findOne({ email });
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -200,12 +200,11 @@ const getUserDetail = async (req, res, next) => {
     const user = await UserModel.findById(req.user.id);
     console.log(user);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       user,
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -255,20 +254,98 @@ const updateUserPassword = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-const updateUserProfile = catchAsyncErrors(async (req, res, next) => {
+const updateUserNameAndEmail = catchAsyncErrors(async (req, res, next) => {
   const { name, email } = req.body;
 
-  const user = await UserModel.findByIdAndUpdate(
-    req.user._id,
-    { name, email },
-    {
-      new: true, //Return the updated user
-      runValidators: true,
-      useFindAndModify: false,
-    }
-  );
+  const userData = {
+    name: req.body.name,
+    email: req.body.email,
+  };
+
+  const user = await UserModel.findByIdAndUpdate(req.params.id, userData, {
+    new: true, //Return the updated user
+    runValidators: true,
+    useFindAndModify: false,
+  });
+  res.status(200).json({
+    success: true,
+    user,
+  });
 });
 
+//// Admin Want to see All users getUserDetailbyAdmin
+
+const getUserDetailByAdmin = catchAsyncErrors(async () => {
+  const user = await UserModel.find();
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
+const getSingleUserDetailByAdmin = catchAsyncErrors(async () => {
+  const user = await UserModel.findById(req.params.id);
+  if (!user) {
+    res.status(404).json({
+      success: true,
+      message: `User is not found with this ${req.params.id}`,
+    });
+  }
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
+
+const updateUserProfileByAdmin = catchAsyncErrors(async (req, res, next) => {
+  const { name, email, role } = req.body;
+
+  const userData = {
+    name: req.body.name,
+    email: req.body.email,
+    role: req.body.role,
+  };
+
+  const user = await UserModel.findByIdAndUpdate(req.user.id, userData, {
+    new: true, //Return the updated user
+    runValidators: true,
+    useFindAndModify: false,
+  });
+  if (!user) {
+    res.status(404).json({
+      success: true,
+      message: `User is not found with this ${req.params.id}`,
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
+
+const deleteUserByAdmin = async (req, res, next) => {
+  try {
+    const user = UserModel.findById(req.params.id);
+    if (!user) {
+      res.status(404).json({
+        success: true,
+        message: `User is not found with this ${req.params.id}`,
+      });
+    }
+    await user.deleteOne();
+
+    res.status(200).json({
+      suucess: true,
+      message: "User deleted Suucesfully",
+    });
+  } catch (error) {
+    console.log(err);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
 module.exports = {
   login,
   createUser,
@@ -277,5 +354,9 @@ module.exports = {
   resetPassword,
   getUserDetail,
   updateUserPassword,
-  updateUserProfile,
+  updateUserNameAndEmail,
+  getUserDetailByAdmin,
+  getSingleUserDetailByAdmin,
+  updateUserProfileByAdmin,
+  deleteUserByAdmin,
 };

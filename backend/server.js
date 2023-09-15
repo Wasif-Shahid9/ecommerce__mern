@@ -1,7 +1,9 @@
 // UnCaught Error
 process.on("uncaughtException", (error) => {
   console.log(`Error: ${error.message}`);
-  console.log("Shuting Down Server due to UnCaught Error ");
+  console.log(
+    "Shuting Down Server due to UnCaught Error Something is missing "
+  );
   process.exit(1);
 });
 

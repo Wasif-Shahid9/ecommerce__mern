@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please Enter Your Password"],
     min: [8, "Password Should be greater than 8 characters "],
     /// select false krne se yh ho ga ky jb ma data get kroon ga to mujhe password ni mily ga
-    select: false,
+    // select: false,
   },
   userProfile: {
     public_id: {

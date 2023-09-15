@@ -32,6 +32,9 @@ const productSchema = new mongoose.Schema({
   },
   reviews: [
     {
+      user: {
+        type: mongoose.Schema.ObjectId,
+      },
       name: {
         type: String,
         require: true,
@@ -49,6 +52,8 @@ const productSchema = new mongoose.Schema({
   /// Yh is liye add kiya ta ky pta chly ky kis admin ne kn si product Add ki ha
   user: {
     type: mongoose.Schema.ObjectId,
+    ref: "User",
+    required: true,
   },
 
   createdAt: {

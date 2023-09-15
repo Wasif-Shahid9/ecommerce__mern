@@ -15,7 +15,7 @@ module.exports = (thefun) => (req, res, next) => {
       console.error(error.message);
       res.status(500).json({
         success: false,
-        message: "An error occurred while processing your request.",
+        message: "An error occurred while processing your request. Internal Server Error",
       });
     }
   });

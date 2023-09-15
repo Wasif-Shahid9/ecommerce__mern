@@ -5,6 +5,7 @@ const {
   updateProduct,
   deleteProduct,
   getProductDetail,
+  // searchProducts,
 } = require("../controllers/productController");
 const {
   isAuthenticatedUser,
@@ -16,11 +17,10 @@ const router = express.Router();
 /// Laikin Ab koi bhi ay or products delete kr dy yh create kry yh to sirf ADMIN kry ga is ky liye Admin
 
 router.route("/getproducts").get(getAllProducts);
+// router.route("/search/:keyword").get(searchProducts);
 router.route("/createproducts").post(isAuthenticatedUser, createProduct);
 router.route("/updateproduct/:id").put(isAuthenticatedUser, updateProduct);
 router.route("/deleteproduct/:id").delete(isAuthenticatedUser, deleteProduct);
-router
-  .route("/getproductdetail/:id")
-  .get(isAuthenticatedUser, getProductDetail);
+router.route("/getproductdetail/:id").get(getProductDetail);
 
 module.exports = router;
