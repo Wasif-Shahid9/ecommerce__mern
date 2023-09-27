@@ -26,7 +26,7 @@ router.route("/password/reset/:token").put(resetPassword);
 router.route("/logout").get(logout);
 
 /// User OWN
-router.route("/me").get(getUserDetail);
+router.route("/me").get(isAuthenticatedUser, getUserDetail);
 router
   .route("/updateUserPassword")
   .put(isAuthenticatedUser, updateUserPassword);

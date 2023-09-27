@@ -17,12 +17,12 @@ router.route("/order").post(isAuthenticatedUser, createOrder);
 router.route("/order/:id").get(isAuthenticatedUser, getSingleOrder);
 router.route("/orders/me").get(isAuthenticatedUser, getMyOrders);
 router
-  .route("/orders/admin")
+  .route("/admin/orders")
   .get(isAuthenticatedUser, authorizeRoles("admin"), getAllOrdersByAdmin);
 router
-  .route("/orders/admin/:id")
+  .route("/admin/order/:id")
   .put(isAuthenticatedUser, authorizeRoles("admin"), updateOrderStatusByAdmin);
 router
-  .route("/orders/admin/:id")
+  .route("/admin/order/:id")
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProductByAdmin);
 module.exports = router;

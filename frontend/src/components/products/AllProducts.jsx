@@ -4,16 +4,15 @@ import { searchAction } from "../../redux/reducersFun/searchReducer";
 import { getproductAction } from "../../redux/reducersFun/productReducer";
 import { useParams } from "react-router-dom";
 import Loader from "../loader/Loader";
-import Pagination from "react-js-pagination";
+import Pagination from "./Pagination";
 const AllProducts = ({ req }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   const { products, loading, error, resultPerPage } = useSelector(
     (state) => state.products
   );
-  console.log("resultPerPage", resultPerPage);
+
   const handlePageChange = (newPage) => {
-    console.log(newPage);
     setCurrentPage(newPage);
   };
   const { keyword } = useParams();
@@ -26,22 +25,22 @@ const AllProducts = ({ req }) => {
 
   const productsCount = 10;
   return (
-    <div>
+    <div className="container mx-auto my-8 px-4">
+      <h1 className="text-3xl font-semibold mb-6">All Products</h1>
       {loading ? (
         <Loader />
       ) : (
-        <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {products &&
-            products.map((data) => {
-              return (
-                <div key={data.id}>
-                  <h1> {data.name} </h1>
-                  <p> {data.description} </p>
-                </div>
-              );
-            })}
+            products.map((data) => (
+              <div key={data.id} className="bg-white p-4 rounded-lg shadow-md">
+                <h2 className="text-lg font-semibold">{data.name}</h2>
+                <p className="text-gray-500">{data.description}</p>
+              </div>
+            ))}
         </div>
       )}
+
       <Pagination
         activePage={currentPage}
         itemsCountPerPage={resultPerPage}
@@ -54,6 +53,8 @@ const AllProducts = ({ req }) => {
         activeClass="pageItemActive"
         activeLinkClass="pageLinkActive"
       />
+
+   
     </div>
   );
 };

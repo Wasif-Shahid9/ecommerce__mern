@@ -30,6 +30,18 @@ const productSchema = new mongoose.Schema({
     type: Number,
     deafult: 0,
   },
+  images: [
+    {
+      public_id: {
+        type: String,
+        required: true,
+      },
+      url: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   reviews: [
     {
       user: {
@@ -53,7 +65,7 @@ const productSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
-    required: true,
+    // required: true,
   },
 
   createdAt: {

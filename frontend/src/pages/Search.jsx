@@ -13,8 +13,8 @@ const Search = () => {
     if (keyword) {
       navigate(`/allproducts/${keyword}`);
     } else {
-      console.log("No Products Found");
       alert("No products Found");
+      console.log("No Produts Found");
     }
   };
 

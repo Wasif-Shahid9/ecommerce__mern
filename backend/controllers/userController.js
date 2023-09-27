@@ -12,7 +12,7 @@ const validator = require("validator");
 const createUser = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
-    console.log("name", req.body);
+
     // Check if the email already exists
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
@@ -22,7 +22,6 @@ const createUser = async (req, res, next) => {
       });
     }
     const salt = await bcrypt.genSalt(10);
-    console.log("salt", salt);
 
     const hashedPassword = await bcrypt.hash(password, salt);
     const user = await UserModel.create({
@@ -60,7 +59,6 @@ const login = async (req, res, next) => {
 
     const isPasswordMatch = await bcrypt.compare(password, user.password);
 
-    console.log("user password", password, user.password);
     if (!isPasswordMatch) {
       return res.status(401).json({
         success: false,
@@ -80,10 +78,15 @@ const login = async (req, res, next) => {
 
 //// Logout User
 const logout = (req, res, next) => {
-  res.cookie("token", null, {
-    expires: new Date(Date.now()),
-    httpOnly: true,
-  });
+  // res.cookie("token", "", {
+  //   path: "/",
+  //   domain: "localhost",
+  //   expires: new Date(),
+  //   httpOnly: true,
+
+  // });
+  res.clearCookie("token");
+
   res.status(200).json({
     success: true,
     message: "Logout Successfully",
@@ -108,24 +111,26 @@ const getResetPasswordToken = (user) => {
 
 const forgotPassword = async (req, res, next) => {
   const user = await UserModel.findOne({ email: req.body.email });
+  console.log("userforgotPass", user);
 
   if (!user) {
-    res.status(404).json({
+    return res.status(404).json({
       succsss: false,
       message: "User is not Found",
     });
   }
   const resetToken = getResetPasswordToken(user);
-  console.log(resetToken);
 
   await UserModel.findOneAndUpdate(
     { email: req.body.email },
     { $set: { password: resetToken } }
+    // { $set: { resetPasswordToken: resetToken } }
   );
 
   const resetPasswordUrl = `${req.protocol}://${req.get(
     "host"
-  )}/api/v1/password/reset/${resetToken}`;
+  )}/api/v1/password/forgot/${resetToken}`;
+  console.log("resetPasswordUrl", resetPasswordUrl);
 
   const message = `Your password reset token is :- \n\n ${resetPasswordUrl}  \n\nIf you have not requested this email then, please ignore it.`;
   try {
@@ -139,6 +144,7 @@ const forgotPassword = async (req, res, next) => {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
     await user.save({ validateBeforeSave: false });
+
     res.status(500).json({
       success: false,
       message: "Interval Server Error",
@@ -148,14 +154,12 @@ const forgotPassword = async (req, res, next) => {
 
 const resetPassword = async (req, res, next) => {
   const { token } = req.params;
-  console.log(token);
 
   const resetPasswordToken = crypto
     .createHash("sha256")
     .update(req.params.token)
     .digest("hex");
   const { newPassword, confirmPassword } = req.body;
-  console.log("newPassword", newPassword, confirmPassword);
 
   const user = await UserModel.findOne({
     password: token,
@@ -165,7 +169,6 @@ const resetPassword = async (req, res, next) => {
   //   resetPasswordToken,
   //   resetPasswordExpire: { $gt: Date.now() },
   // });
-  console.log("user", user);
 
   if (!user) {
     return res.status(404).json({
@@ -196,9 +199,7 @@ const resetPassword = async (req, res, next) => {
 const getUserDetail = async (req, res, next) => {
   /// req.user me hi hm poora user save krwa rhy authentication me or hm ne isy protected route bnaya ha  to hm us user se kch bhi get kr skte hn
   try {
-    console.log("req.user", req.user);
     const user = await UserModel.findById(req.user.id);
-    console.log(user);
 
     return res.status(200).json({
       success: true,
@@ -213,46 +214,57 @@ const getUserDetail = async (req, res, next) => {
 };
 
 // Update User Password
-const updateUserPassword = catchAsyncErrors(async (req, res, next) => {
-  const { previousPass, newPass, confirmPass } = req.body;
+const updateUserPassword = async (req, res, next) => {
+  try {
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+    console.log("req.body:", req.body);
 
-  // Find the user by their ID (or some identifier) and select the current hashed password
-  const user = await UserModel.findById(req.user._id).select("password");
-  console.log(user);
+    // Find the user by their ID (or some identifier) and select the current hashed password
+    const user = await UserModel.findById(req.user.id).select("+password");
+    console.log("reqUser", req.user);
 
-  if (!user) {
-    return res.status(404).json({
-      success: false,
-      message: "User not found",
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
+    // console.log("user password", user.password);
+    // console.log("isPaswordMatch", isPasswordMatch);
+
+    if (!isPasswordMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Old password is incorrect",
+      });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "New password and confirm password do not match",
+      });
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    user.password = hashedNewPassword;
+    await user.save();
+    return res.status(201).json({
+      success: true,
+      message: "Password updated successfully",
+    });
+    // sendCookie(user, res, "Update Pass Ok");
+  } catch (error) {
+    console.log("Update Password Error", error);
+    res.status(500).json({
+      sucees: false,
+      message: `Internal Server Error ${error}`,
     });
   }
-
-  const isPasswordMatch = await bcrypt.compare(previousPass, user.password);
-
-  if (!isPasswordMatch) {
-    return res.status(400).json({
-      success: false,
-      message: "Previous password is incorrect",
-    });
-  }
-
-  if (newPass !== confirmPass) {
-    return res.status(400).json({
-      success: false,
-      message: "New password and confirm password do not match",
-    });
-  }
-
-  const hashedNewPassword = await bcrypt.hash(newPass, 10);
-
-  user.password = hashedNewPassword;
-  await user.save();
-
-  res.status(201).json({
-    success: true,
-    message: "Password updated successfully",
-  });
-});
+};
 
 const updateUserNameAndEmail = catchAsyncErrors(async (req, res, next) => {
   const { name, email } = req.body;
@@ -262,8 +274,8 @@ const updateUserNameAndEmail = catchAsyncErrors(async (req, res, next) => {
     email: req.body.email,
   };
 
-  const user = await UserModel.findByIdAndUpdate(req.params.id, userData, {
-    new: true, //Return the updated user
+  const user = await UserModel.findByIdAndUpdate(req.user.id, userData, {
+    new: true,
     runValidators: true,
     useFindAndModify: false,
   });
@@ -339,7 +351,6 @@ const deleteUserByAdmin = async (req, res, next) => {
       message: "User deleted Suucesfully",
     });
   } catch (error) {
-    console.log(err);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",

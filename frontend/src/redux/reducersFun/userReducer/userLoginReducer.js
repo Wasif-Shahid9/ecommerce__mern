@@ -56,9 +56,7 @@ export const userActionLogin = (userData) => {
 
       dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     } catch (error) {
-      const { response } = error;
-    
-      dispatch({ type: USER_LOGIN_FAIL, payload: data });
+      dispatch({ type: USER_LOGIN_FAIL, payload: error });
     }
   };
 };

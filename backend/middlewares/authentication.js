@@ -4,7 +4,7 @@ const JWT = require("jsonwebtoken");
 const isAuthenticatedUser = async (req, res, next) => {
   try {
     const { token } = req.cookies;
-    // console.log("token", token);
+
     if (!token) {
       return res.status(401).json({
         success: false,
@@ -13,7 +13,7 @@ const isAuthenticatedUser = async (req, res, next) => {
     }
     const decodeToken = JWT.verify(token, process.env.JWT_SECRET);
     req.user = await UserModel.findById(decodeToken.id);
-    // console.log('req.user', req.user)
+    // console.log('req.userauth', req.user)
     next();
   } catch (error) {
     res.status(500).json({
@@ -25,7 +25,6 @@ const isAuthenticatedUser = async (req, res, next) => {
 
 /// Admin Authentication Roles
 const authorizeRoles = (...roles) => {
-  console.log("Roles", roles);
   return (req, res, next) => {
     try {
       const { role } = req.user;

@@ -18,14 +18,12 @@ export const searchReducer = (state = { products: [] }, action) => {
   }
 };
 
-export function searchAction(keyword= "") {
-  console.log("searchQuery", searchQuery);
+export function searchAction(keyword = "") {
   return async (dispatch, getState) => {
     try {
       const { data } = await axios.get(
         `http://localhost:4000/api/search?keyword=${keyword}`
       );
-      console.log(data);
 
       dispatch({ type: SEARCH_PRODUCTS, payload: data });
     } catch (error) {

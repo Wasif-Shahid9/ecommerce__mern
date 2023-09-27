@@ -2,6 +2,7 @@ const OrderModel = require("../models/orderModel");
 const ProductModel = require("../models/produtModel");
 
 exports.createOrder = async (req, res, next) => {
+  console.log(req.body);
   try {
     const {
       address,
@@ -32,7 +33,8 @@ exports.createOrder = async (req, res, next) => {
       order,
     });
   } catch (err) {
-    res.status(501).json({
+    console.log("orderError", err);
+    res.status(500).json({
       success: false,
       message: "Internal Server Error ",
       error: err,
@@ -42,17 +44,24 @@ exports.createOrder = async (req, res, next) => {
 
 // Get Single Orders
 exports.getSingleOrder = async (req, res, next) => {
+  console.log("req.parmas.id", req.params.id);
   try {
-    const order = await OrderModel.findById(req.params.id);
+    // const order = await OrderModel.findById(req.params.id);
+
+    const order = await OrderModel.findById(req.params.id).populate(
+      "user",
+      "name email"
+    );
+
     console.log("Single Order", order);
     if (!order) {
-      res.status(404).json({
+      return res.status(404).json({
         success: false,
         message: `User is not found with this id: ${req.params.id}`,
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       order,
     });
@@ -67,20 +76,23 @@ exports.getSingleOrder = async (req, res, next) => {
 
 // login User Orders
 exports.getMyOrders = async (req, res, next) => {
+  console.log("order user id", req.user._id);
   try {
     // db me wo orders find krne hn jis  me jo user ki id ha db me wo login user ki id se match kry
     const orders = await OrderModel.find({ user: req.user._id });
-    console.log(orders);
+    console.log("userID....", orders);
+    // console.log("orders", orders);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       orders,
     });
-  } catch (err) {
+  } catch (error) {
+    console.error("Error fetching orders:", error);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
-      error: err,
+      error: error.message,
     });
   }
 };
@@ -97,7 +109,7 @@ exports.getAllOrdersByAdmin = async (req, res, next) => {
     }, 0);
     console.log(totalProductPrice);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       orders,
       totalOrders,

@@ -1,12 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 const UserOption = ({ user }) => {
-  console.log("useroption", user);
+  if (!user) {
+    return;
+  }
+  console.log(user);
   return (
-    <div>
-      <Link to="/logout"> Logout</Link>
-    </div>
+    <>
+      <h1> user option </h1>
+    </>
   );
 };
 

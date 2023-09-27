@@ -13,12 +13,6 @@ const initialState = {
 };
 export const userReducerLogout = (state = initialState, action) => {
   switch (action.type) {
-    case USER_LOGOUT_REQ:
-      return {
-        ...state,
-        loading: true,
-        isAuthenticated: false,
-      };
     case USER_LOGOUT_SUCCESS:
       return {
         ...state,
@@ -30,7 +24,6 @@ export const userReducerLogout = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        isAuthenticated: true,
         error: action.payload,
       };
     default:
@@ -41,7 +34,7 @@ export const userReducerLogout = (state = initialState, action) => {
 export const userActionLogout = () => {
   return async (dispatch, getState) => {
     try {
-      const { data } = await axios.get("http://localhost:4000/api/v1/logout");
+      await axios.get("http://localhost:4000/api/v1/logout");
 
       dispatch({ type: USER_LOGOUT_SUCCESS });
     } catch (error) {
