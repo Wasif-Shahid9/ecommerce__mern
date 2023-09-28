@@ -41,7 +41,7 @@ const Home = () => {
         <Loader />
       ) : (
         <>
-          <HelmetCom title="WSEcommerce" />
+          <HelmetCom title="WSEcommerce" />git push -u origin master
 
           <HeaderSlider />
           <div className="home  lg:w-[85%] m-auto  mt-[20px] mx-30px">
