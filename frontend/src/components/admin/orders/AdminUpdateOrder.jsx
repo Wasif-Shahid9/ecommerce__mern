@@ -42,8 +42,8 @@ const AdminUpdateOrder = () => {
         <div className="flex flex-col">
           <label className="text-lg font-semibold">Update Status:</label>
           <select onChange={(e) => handleInputChange(e.target.value)}>
-            {options.map((option) => (
-              <option value={option.value} name={option.label}>
+            {options.map((option, i) => (
+              <option value={option.value} name={option.label} key={i}>
                 {option.label}{" "}
               </option>
             ))}

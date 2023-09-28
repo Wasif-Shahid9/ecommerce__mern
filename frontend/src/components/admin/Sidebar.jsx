@@ -21,18 +21,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { Line, Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import { useDispatch, useSelector } from "react-redux";
-import { adminProductAction } from "../../redux/reducersFun/adminProducts/adminProductsReducer";
+
 import CreateProductAdmin from "./AdminCreateProduct";
 // Collapse
 import ListSubheader from "@mui/material/ListSubheader";
-
 import Collapse from "@mui/material/Collapse";
-
 import DraftsIcon from "@mui/icons-material/Drafts";
 import SendIcon from "@mui/icons-material/Send";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
+import { adminProductAction } from "../../redux/reducersFun/adminProducts/adminProductsReducer";
+import { adminAllOrdersAction } from "../../redux/reducersFun/adminOrders/adminAllOrders";
+import { adminGetAllUsersAction } from "../../redux/reducersFun/adminUsers/adminAllUsers";
 
 const drawerWidth = 240;
 
@@ -44,10 +45,14 @@ function Sidebar(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { products } = useSelector((state) => state.adminProductsReducer);
+  const { orders } = useSelector((state) => state.adminAllOrders);
+  const { users } = useSelector((state) => state.adminAllUsersReducer);
+
   useEffect(() => {
     dispatch(adminProductAction());
+    dispatch(adminAllOrdersAction());
+    dispatch(adminGetAllUsersAction());
   }, [dispatch]);
-  console.log("sidebar pro...", products);
 
   let outOfStock = 0;
 
@@ -66,11 +71,11 @@ function Sidebar(props) {
   };
 
   const menuItems = [
+    { text: "Home", link: "/" },
     { text: "Dashboard", link: "/admin/dashboard" },
     // { text: "Products", link: "/admin/products" },
     { text: "Orders", link: "/admin/orders" },
-    { text: "Users", link: "/users" },
-    { text: "Reviews", link: "/reviews" },
+    { text: "Users", link: "/admin/users" },
   ];
 
   const drawer = (
@@ -123,23 +128,26 @@ function Sidebar(props) {
             </Link>
           </ListItemButton>
         </List>
-        <List component="div" disablePadding>
+        {/* <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            {/* <Link to="/admin/update">
+            <Link to="/admin/update">
               <ListItemText primary="Update Product" />
-            </Link> */}
+            </Link>
           </ListItemButton>
-        </List>
+        </List> */}
       </Collapse>
       <Divider />
     </div>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  let totalAmount = 0;
+  orders &&
+    orders.forEach((item) => {
+      totalAmount += item.totalPrice;
+    });
 
   const lineChartData = {
     labels: ["Initial Amount", "Amount Earned"],
@@ -148,7 +156,7 @@ function Sidebar(props) {
         label: "TOTAL AMOUNT",
         backgroundColor: ["tomato"],
         hoverBackgroundColor: ["rgb(197, 72, 49)"],
-        data: [0, 4000],
+        data: [0, totalAmount],
       },
     ],
   };
@@ -163,6 +171,8 @@ function Sidebar(props) {
       },
     ],
   };
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -184,7 +194,7 @@ function Sidebar(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            sfsf
+            Dashboard
           </Typography>
         </Toolbar>
       </AppBar>
@@ -212,7 +222,8 @@ function Sidebar(props) {
         >
           {drawer}
         </Drawer>
-        {/* <Drawer
+
+        <Drawer
           variant="permanent"
           sx={{
             display: { xs: "none", sm: "block" },
@@ -222,17 +233,6 @@ function Sidebar(props) {
             },
           }}
           open
-        >
-          {drawer}
-        </Drawer> */}
-        <Drawer
-          container={container}
-          variant="permanent"
-          open
-          sx={{
-            width: drawerWidth, // Set the width of the drawer
-            flexShrink: 0,
-          }}
         >
           {drawer}
         </Drawer>
@@ -247,13 +247,11 @@ function Sidebar(props) {
       >
         <div>
           <h1 className="text-4xl text-center bg-black text-white py-4">
-            Dashboard
+            Total Amount <br /> ${totalAmount}
           </h1>
         </div>
-        <div>
-          <p>Total Amount 200$</p>
-        </div>
-        <div className="flex">
+
+        <div className="flex mt-5">
           <Link
             to="/admin/products "
             className="border-l-neutral-900 bg-blue-900 p-7 text-white "
@@ -265,25 +263,24 @@ function Sidebar(props) {
             to="/admin/orders"
             className="border-l-neutral-900 bg-blue-900 p-7 text-white ms-5"
           >
-            <p> Ordes </p>
-            {/* <p> {products && products.orders} </p> */}
+            <p> Orders </p>
+            <p>{orders && orders.length}</p>
           </Link>
           <Link
             to="/admin/users"
             className="border-l-neutral-900 bg-blue-900 p-7 text-white ms-5"
           >
             <p>Users</p>
-            {/* <p>{users && users.length}</p> */}
+            <p>{users && users.length}</p>
           </Link>
         </div>
         <div className="lineChart ">
           {/* <Line data={lineState} /> */}
           <Line data={lineChartData} />
         </div>
-        <div className="dognut__Chart  w-[50%] h-[50%]">
+        <div className="dognut__Chart  w-[50%] h-[50%] border-l-neutral-900">
           <Doughnut data={dognutChartData} {...props} />
         </div>
-
         <Toolbar />
       </Box>
     </Box>

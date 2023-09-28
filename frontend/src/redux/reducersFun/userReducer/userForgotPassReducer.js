@@ -7,6 +7,8 @@ export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
 export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
 export const RESET_PASSWORD_FAIL = "RESET_PASSWORD_FAIL";
 
+export const CLEAR_ERRORS = "CLEAR_ERRORS";
+
 export const forgotPasswordReducer = (state = {}, action) => {
   switch (action.type) {
     case FORGOT_PASSWORD_REQUEST:
@@ -38,11 +40,11 @@ export const forgotPasswordReducer = (state = {}, action) => {
         error: action.payload,
       };
 
-    // case CLEAR_ERRORS:
-    //   return {
-    //     ...state,
-    //     error: null,
-    //   };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
 
     default:
       return state;
@@ -50,10 +52,10 @@ export const forgotPasswordReducer = (state = {}, action) => {
 };
 
 export const forgotPasswordAction = (email) => {
-  console.log("forgot Password Start");
+  ("forgot Password Start");
   return async (dispatch, getState) => {
     try {
-      console.log("before");
+      ("before");
       dispatch({ type: FORGOT_PASSWORD_REQUEST });
 
       const { data } = await axios.post("api/v1/forgotPassword", email, {
@@ -61,7 +63,7 @@ export const forgotPasswordAction = (email) => {
           "Content-Type": "application/json",
         },
       });
-      console.log("data", data);
+      ("data", data);
       dispatch({ type: FORGOT_PASSWORD_SUCCESS, payload: data.message });
     } catch (error) {
       dispatch({

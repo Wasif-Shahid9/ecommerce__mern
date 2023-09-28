@@ -2,6 +2,7 @@ import axios from "axios";
 const CREATE_PRODUCT_REQUEST = "CREATE_PRODUCT_REQUEST";
 const CREATE_PRODUCT_SUCCESS = "CREATE_PRODUCT_REQUEST";
 const CREATE_PRODUCT_FAIL = "CREATE_PRODUCT_REQUEST";
+const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const createProductReducer = (state = { product: {} }, action) => {
   switch (action.type) {
     case CREATE_PRODUCT_REQUEST:
@@ -26,23 +27,24 @@ export const createProductReducer = (state = { product: {} }, action) => {
     //     ...state,
     //     success: false,
     //   };
-    // case CLEAR_ERRORS:
-    //   return {
-    //     ...state,
-    //     error: null,
-    //   };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
     default:
       return state;
   }
 };
 
 export const createProductAction = (productData) => {
+  ("productData", productData);
   return async (dispatch) => {
     try {
       dispatch({ type: CREATE_PRODUCT_REQUEST });
 
       const config = {
-        headers: { "Content-Type": "application/json" },
+        // headers: { "Content-Type": "application/json" },
       };
 
       const { data } = await axios.post(
@@ -62,4 +64,8 @@ export const createProductAction = (productData) => {
       });
     }
   };
+};
+
+export const clearErrors = () => async (dispatch) => {
+  dispatch({ type: CLEAR_ERRORS });
 };

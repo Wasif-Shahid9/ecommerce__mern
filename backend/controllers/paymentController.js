@@ -29,19 +29,19 @@ const stripe = require("stripe")(
 // };
 
 exports.processPayment = async (req, res, next) => {
-  console.log(req.body.amount);
+  (req.body.amount);
   try {
     const myPayment = await stripe.paymentIntents.create({
       amount: req.body.amount,
       currency: "usd",
     });
 
-    console.log("myPayment", myPayment);
+    ("myPayment", myPayment);
     res
       .status(200)
       .json({ success: true, client_secret: myPayment.client_secret });
   } catch (error) {
-    console.log(error);
+    (error);
   }
 };
 

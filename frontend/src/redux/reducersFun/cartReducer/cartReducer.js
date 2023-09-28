@@ -3,6 +3,7 @@ const ADD_TO_CART = "ADD_TO_CART";
 const REMOVE_CART_ITEM = "REMOVE_CART_ITEM";
 const SAVE_SHIPPING_INFO = "SAVE_SHIPPING_INFO";
 
+const CLEAR_ERRORS = "CLEAR_ERRORS";
 const initialState = {
   items: [],
 };
@@ -46,6 +47,11 @@ export const cartReducer = (
       return {
         ...state,
         shippingInfo: action.payload,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
       };
     default:
       return state;
@@ -100,4 +106,8 @@ export const saveShippingInfo = (data) => async (dispatch) => {
   });
 
   localStorage.setItem("shippingInfo", JSON.stringify(data));
+};
+
+export const clearErrors = () => async (dispatch) => {
+  dispatch({ type: CLEAR_ERRORS });
 };

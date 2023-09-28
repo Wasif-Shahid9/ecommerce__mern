@@ -39,7 +39,7 @@ export const userReducerRegister = (state = initialState, action) => {
 };
 // Action Creators
 export const userActionRegister = (userData) => {
-  console.log("userData", userData);
+  ("userData", userData);
   return async (dispatch, getState) => {
     try {
       dispatch({ type: USER_REGISTER_REQ });
@@ -52,11 +52,11 @@ export const userActionRegister = (userData) => {
           },
         }
       );
-      console.log("data", response);
+      ("data", response);
       dispatch({ type: USER_REGISTER_SUCCESS, payload: response.data });
     } catch (error) {
       const { response } = error;
-      console.log(response);
+      (response);
       dispatch({ type: USER_REGISTER_FAIL, payload: response.data });
     }
   };

@@ -111,7 +111,7 @@ const getResetPasswordToken = (user) => {
 
 const forgotPassword = async (req, res, next) => {
   const user = await UserModel.findOne({ email: req.body.email });
-  console.log("userforgotPass", user);
+  ("userforgotPass", user);
 
   if (!user) {
     return res.status(404).json({
@@ -130,7 +130,7 @@ const forgotPassword = async (req, res, next) => {
   const resetPasswordUrl = `${req.protocol}://${req.get(
     "host"
   )}/api/v1/password/forgot/${resetToken}`;
-  console.log("resetPasswordUrl", resetPasswordUrl);
+  ("resetPasswordUrl", resetPasswordUrl);
 
   const message = `Your password reset token is :- \n\n ${resetPasswordUrl}  \n\nIf you have not requested this email then, please ignore it.`;
   try {
@@ -217,11 +217,11 @@ const getUserDetail = async (req, res, next) => {
 const updateUserPassword = async (req, res, next) => {
   try {
     const { oldPassword, newPassword, confirmPassword } = req.body;
-    console.log("req.body:", req.body);
+    ("req.body:", req.body);
 
     // Find the user by their ID (or some identifier) and select the current hashed password
     const user = await UserModel.findById(req.user.id).select("+password");
-    console.log("reqUser", req.user);
+    ("reqUser", req.user);
 
     if (!user) {
       return res.status(404).json({
@@ -231,8 +231,8 @@ const updateUserPassword = async (req, res, next) => {
     }
 
     const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
-    // console.log("user password", user.password);
-    // console.log("isPaswordMatch", isPasswordMatch);
+    // ("user password", user.password);
+    // ("isPaswordMatch", isPasswordMatch);
 
     if (!isPasswordMatch) {
       return res.status(400).json({
@@ -258,7 +258,7 @@ const updateUserPassword = async (req, res, next) => {
     });
     // sendCookie(user, res, "Update Pass Ok");
   } catch (error) {
-    console.log("Update Password Error", error);
+    ("Update Password Error", error);
     res.status(500).json({
       sucees: false,
       message: `Internal Server Error ${error}`,
@@ -287,13 +287,21 @@ const updateUserNameAndEmail = catchAsyncErrors(async (req, res, next) => {
 
 //// Admin Want to see All users getUserDetailbyAdmin
 
-const getUserDetailByAdmin = catchAsyncErrors(async () => {
-  const user = await UserModel.find();
-  res.status(200).json({
-    success: true,
-    user,
-  });
-});
+const getAllUserByAdmin = async (req, res) => {
+  try {
+    const user = await UserModel.find();
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    ("Admin User Error", error);
+    res.status(500).json({
+      success: false,
+      message: `Internal Server Error ${error}`,
+    });
+  }
+};
 const getSingleUserDetailByAdmin = catchAsyncErrors(async () => {
   const user = await UserModel.findById(req.params.id);
   if (!user) {
@@ -366,7 +374,7 @@ module.exports = {
   getUserDetail,
   updateUserPassword,
   updateUserNameAndEmail,
-  getUserDetailByAdmin,
+  getAllUserByAdmin,
   getSingleUserDetailByAdmin,
   updateUserProfileByAdmin,
   deleteUserByAdmin,

@@ -44,11 +44,11 @@ export function productDetailAction(id) {
   return async (dispatch, getState) => {
     try {
       const { data } = await axios.get(`/api/v1/getproductdetail/${id}`);
-      // console.log("productDetailData", Array.isArray(data));
+      // ("productDetailData", Array.isArray(data));
       dispatch({ type: PRODUCTDETAIL_REQ });
       dispatch({ type: PRODUCTDETAIL_SUCCESS, payload: data.product });
     } catch (error) {
-      dispatch({ type: PRODUCTDETAIL_FAIL, payload: error.messaeg });
+      dispatch({ type: PRODUCTDETAIL_FAIL, payload: error.message });
     }
   };
 }
@@ -58,3 +58,5 @@ export const clearErrors = () => async (dispatch) => {
 };
 
 // action ko dispatch me call krna hota ha js me call aik or return is liye likha ky agr wo argument me koi value lyta to phir dispatch or getState us ky sath ni likh skte
+
+

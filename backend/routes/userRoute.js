@@ -8,7 +8,7 @@ const {
   getUserDetail,
   updateUserPassword,
   updateUserNameAndEmail,
-  getUserDetailByAdmin,
+  getAllUserByAdmin,
   getSingleUserDetailByAdmin,
   updateUserProfileByAdmin,
   deleteUserByAdmin,
@@ -37,11 +37,11 @@ router
 //   (ADMIN)
 
 router
-  .route("/getUserDetailByAdmin")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getUserDetailByAdmin);
+  .route("/admin/users")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), getAllUserByAdmin);
 
 router
-  .route("/getSingleUserDetailByAdmin/:id")
+  .route("/admin/usersdetails/:id")
   .get(
     isAuthenticatedUser,
     authorizeRoles("admin"),

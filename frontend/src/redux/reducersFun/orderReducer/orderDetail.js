@@ -36,18 +36,23 @@ export const orderDetailsReducer = (state = { order: {} }, action) => {
 };
 
 export const getOrderDetailsAction = (id) => {
-  console.log("orderDetaiID", id);
+  ("orderDetaiID", id);
   return async (dispatch, getState) => {
     try {
-      // console.log("Before Request");
+      // ("Before Request");
       dispatch({ type: ORDER_DETAILS_REQUEST });
-      // console.log("After  Request");
+      // ("After  Request");
       const { data } = await axios.get(`/api/v1/order/${id}`);
-      console.log("orderDetialAction", data.order);
+      ("orderDetialAction", data.order);
       dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data.order });
     } catch (error) {
-      console.log("error", error);
+      ("error", error);
       dispatch({ type: ORDER_DETAILS_FAIL, payload: error.message });
     }
   };
+};
+
+
+export const clearErrors = () => async (dispatch) => {
+  dispatch({ type: CLEAR_ERRORS });
 };

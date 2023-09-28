@@ -3,6 +3,7 @@ export const UPDATE_PRODUCT_REQUEST = "UPDATE_PRODUCT_REQUEST";
 export const UPDATE_PRODUCT_SUCCESS = "UPDATE_PRODUCT_SUCCESS";
 export const UPDATE_PRODUCT_RESET = "UPDATE_PRODUCT_RESET";
 export const UPDATE_PRODUCT_FAIL = "UPDATE_PRODUCT_FAIL";
+const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const updateProductReducer = (state = {}, action) => {
   switch (action.type) {
     case UPDATE_PRODUCT_REQUEST:
@@ -30,18 +31,18 @@ export const updateProductReducer = (state = {}, action) => {
         ...state,
         isUpdated: false,
       };
-    // case CLEAR_ERRORS:
-    //   return {
-    //     ...state,
-    //     error: null,
-    //   };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
     default:
       return state;
   }
 };
 
 export const updateProductAction = (id, productData) => {
-  console.log("updateid", id);
+  ("updateid", id);
 
   return async (dispatch) => {
     try {
@@ -66,4 +67,8 @@ export const updateProductAction = (id, productData) => {
       });
     }
   };
+};
+
+export const clearErrors = () => async (dispatch) => {
+  dispatch({ type: CLEAR_ERRORS });
 };

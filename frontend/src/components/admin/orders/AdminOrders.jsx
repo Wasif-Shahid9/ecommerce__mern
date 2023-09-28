@@ -40,7 +40,7 @@ const AdminOrders = () => {
     }
 
     if (isDeleted) {
-      console.log("Order Delted", isDeleted);
+      ("Order Delted", isDeleted);
       navigate("/admin/orders");
       dispatch({ type: DELETE_ORDER_RESET });
     }

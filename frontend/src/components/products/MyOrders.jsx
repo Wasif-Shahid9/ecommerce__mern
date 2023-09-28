@@ -4,15 +4,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { myOrderAction } from "../../redux/reducersFun/orderReducer/orderReducer";
 import Loader from "../loader/Loader";
-
+import DetailsIcon from "@mui/icons-material/Details";
 const MyOrders = () => {
   const dispatch = useDispatch();
 
   const { loading, error, orders } = useSelector(
     (state) => state.myOrdersReducer
   );
-  // console.log("orders type", Array.isArray(orders));
-  console.log(orders);
+  // ("orders type", Array.isArray(orders));
+  (orders);
 
   const { user } = useSelector((state) => state.userReducer);
 
@@ -49,8 +49,13 @@ const MyOrders = () => {
       type: "number",
       sortable: false,
       renderCell: (params) => {
-        console.log("columnParams", params.id);
-        return <Link to={`/order/${params.id}`}>Single Product</Link>;
+        ("columnParams", params.id);
+        return (
+          <Link to={`/order/${params.id}`}>
+            {" "}
+            <DetailsIcon />{" "}
+          </Link>
+        );
       },
     },
   ];
@@ -66,7 +71,7 @@ const MyOrders = () => {
 
   useEffect(() => {
     if (error) {
-      console.log("order Useeffect error", error);
+      ("order Useeffect error", error);
     }
 
     dispatch(myOrderAction());

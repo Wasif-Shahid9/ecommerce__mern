@@ -1,10 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <>
-      <footer className="bg-white dark:bg-gray-900 border-solid border-2 border-sky-500">
-        <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8 border-solid border-2 border-sky-500">
+      <footer className="mt-5 bg-slate-300 dark:bg-gray-900 ">
+        <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
           <div className="md:flex md:justify-between ">
             <div className="mb-6 md:mb-0">
               <a href="https://flowbite.com/" className="flex items-center">
@@ -18,11 +19,14 @@ const Footer = () => {
                 </span>
               </a>
             </div>
-            <div className="grid grid-cols-2 lg:grid-col-6 gap-8 sm:gap-6 sm:grid-cols-3 border-solid border-2 border-sky-500">
+            <div className="grid grid-cols-2 lg:grid-col-6 gap-8 sm:gap-6 sm:grid-cols-3 ">
               <div>
-                <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-                  Resources
-                </h2>
+                <Link
+                  to="/allproducts"
+                  className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white"
+                >
+                  All Products
+                </Link>
                 <ul className="text-gray-500 dark:text-gray-400 font-medium">
                   <li className="mb-4">
                     <a href="https://flowbite.com/" className="hover:underline">

@@ -2,8 +2,12 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { updateProfileAction } from "../redux/reducersFun/userReducer/userProfileReducer";
+import {
+  updateProfileAction,
+  clearErrors,
+} from "../redux/reducersFun/userReducer/userProfileReducer";
 import { loadUser } from "../redux/reducersFun/userReducer/userReducer";
+import { toast, ToastContainer } from "react-toastify";
 
 const UPDATE_PROFILE_RESET = "UPDATE_PROFILE_RESET";
 const UpdateProfile = () => {
@@ -11,7 +15,7 @@ const UpdateProfile = () => {
   const { error, isUpdated, loading } = useSelector(
     (state) => state.userProfileReducer
   );
-  console.log("updateProfile", user.name);
+  ("updateProfile", user.name);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -25,15 +29,20 @@ const UpdateProfile = () => {
       email,
     };
     dispatch(updateProfileAction(userData));
-    console.log("Update Profile");
+    ("Update Profile");
   };
   useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
+
     if (user) {
       setName(user.name);
       setEmail(user.email);
     }
     if (isUpdated) {
-      console.log("User  Update Successfuly");
+      toast.success("Profile Updated Successfully");
       dispatch(loadUser());
       navigate("/profile");
       dispatch({
@@ -47,8 +56,6 @@ const UpdateProfile = () => {
       <div className="container mx-auto py-8">
         {loading ? (
           <p>Loading...</p>
-        ) : error ? (
-          <p className="text-red-800">Error: {error.message}</p>
         ) : (
           <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
             <form className="px-6 py-4" onSubmit={handleSubmit}>

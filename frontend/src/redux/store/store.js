@@ -28,6 +28,9 @@ import { createProductReducer } from "../reducersFun/adminProducts/adminCreatePr
 import { newReviewReducer } from "../reducersFun/reviewReducer/reviewReducer";
 import { adminAllOrders } from "../reducersFun/adminOrders/adminAllOrders";
 import { adminOrder } from "../reducersFun/adminOrders/adminOrder";
+import { adminAllUsersReducer } from "../reducersFun/adminUsers/adminAllUsers";
+import { adminUserDetailsReducer } from "../reducersFun/adminUsers/adminUserDetails";
+import { adminUser } from "../reducersFun/adminUsers/adminUser";
 
 const allReducers = combineReducers({
   products: productReducer,
@@ -50,6 +53,9 @@ const allReducers = combineReducers({
   newReviewReducer: newReviewReducer,
   adminAllOrders: adminAllOrders,
   adminOrder: adminOrder,
+  adminAllUsersReducer: adminAllUsersReducer,
+  adminUserDetailsReducer: adminUserDetailsReducer,
+  adminUser: adminUser,
 });
 // const store = createStore(
 //   allReducers,

@@ -5,8 +5,10 @@ import "./confirmOrder.css";
 import { useNavigate } from "react-router-dom";
 
 const ConfirmOrder = () => {
+  const HOST = "  http://localhost:4000";
   const navigate = useNavigate();
   const { shippingInfo, cartItems } = useSelector((state) => state.cartReducer);
+  ("cartItems", cartItems);
 
   const { user } = useSelector((state) => state.userReducer);
 
@@ -55,7 +57,7 @@ const ConfirmOrder = () => {
               {cartItems &&
                 cartItems.map((item) => (
                   <div key={item.product}>
-                    <img src={item.image} alt="Product" />
+                    {/* <img src={HOST + item.image} alt="Product" /> */}
                     <Link to={`/product/${item.product}`}>
                       {item.name}
                     </Link>{" "}

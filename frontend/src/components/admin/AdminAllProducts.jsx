@@ -22,7 +22,7 @@ const AdminAllProducts = () => {
 
   useEffect(() => {
     if (error) {
-      console.log("Admin Products Error", error);
+      ("Admin Products Error", error);
     }
     dispatch(adminProductAction());
   }, [dispatch, error]);
@@ -31,13 +31,13 @@ const AdminAllProducts = () => {
   const { error: deleteError, isDeleted } = useSelector(
     (state) => state.deleteProductReducer
   );
-  console.log("isDeletes", isDeleted);
+  ("isDeletes", isDeleted);
   useEffect(() => {
     if (deleteError) {
-      console.log("deleteproducterror", deleteError);
+      ("deleteproducterror", deleteError);
     }
     if (isDeleted) {
-      console.log("Product isDeleted");
+      ("Product isDeleted");
       // Navigate first to /admin/dashboard
       navigate("/admin/dashboard");
 
@@ -54,7 +54,7 @@ const AdminAllProducts = () => {
     dispatch(deleteProductAction(id));
   };
   const handleEdit = () => {
-    console.log("Edit Item");
+    ("Edit Item");
   };
   const columns = [
     { field: "id", headerName: "Product ID", minWidth: 200, flex: 0.5 },

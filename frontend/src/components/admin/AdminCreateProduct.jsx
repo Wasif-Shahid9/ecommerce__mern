@@ -21,7 +21,7 @@
 //       data: e.target.files[0],
 //     };
 //     setImage(img);
-//     console.log("image Save Successfully");
+//     ("image Save Successfully");
 //   };
 //   return (
 //     <>
@@ -50,6 +50,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 
 const AdminCreateProduct = () => {
+  const [file, setFile] = useState("");
+  // ("file", file);
   const drawerWidth = 240;
 
   const dispatch = useDispatch();
@@ -68,10 +70,53 @@ const AdminCreateProduct = () => {
     setProductData({ ...productData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   // Dispatch the action to create the product
+  //   dispatch(createProductAction(productData));
+  // };
+
+  /// Image Upload ///////////////////////
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     // Dispatch the action to create the product
-    dispatch(createProductAction(productData));
+    // dispatch(createProductAction(productData));
+    // ("Product created");
+
+    if (file) {
+      const data = new FormData();
+      // const fileName = `${Date.now()}${file.name}`;
+      Object.keys(productData).forEach((key) => {
+        ("key:", key, "data", productData[key]);
+        data.append(key, productData[key]);
+      });
+
+      data.append("file", file);
+
+      ("formData:", Object.values(data));
+      // data.append("name", fileName);
+      // data.append("file", file);
+
+      // Dispatch the action to create the product
+      dispatch(createProductAction(data));
+      ("Product created");
+
+      // try {
+      //   await fetch("/api/v1/upload", {
+      //     headers: {
+      //       // Set the correct Content-Type header for file upload
+      //       // "Content-type": "multipart/form-data",
+      //     },
+      //     method: "POST",
+      //     body: data,
+      //   });
+      //   ("File uploaded successfully");
+      // } catch (err) {
+      //   ("File upload error", err);
+      // }
+    }
   };
 
   return (
@@ -149,6 +194,17 @@ const AdminCreateProduct = () => {
                 onChange={handleInputChange}
                 required
                 className="border rounded-md p-2 bg-white "
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-lg">Image:</label>
+              <input
+                type="file"
+                accept=".png,.jpeg,.jpg"
+                onChange={(e) => setFile(e.target.files[0])}
+                id="file"
+                name="file"
+                value={productData.file}
               />
             </div>
             <button

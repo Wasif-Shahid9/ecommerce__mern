@@ -2,7 +2,7 @@ const OrderModel = require("../models/orderModel");
 const ProductModel = require("../models/produtModel");
 
 exports.createOrder = async (req, res, next) => {
-  console.log(req.body);
+  (req.body);
   try {
     const {
       address,
@@ -33,7 +33,7 @@ exports.createOrder = async (req, res, next) => {
       order,
     });
   } catch (err) {
-    console.log("orderError", err);
+    ("orderError", err);
     res.status(500).json({
       success: false,
       message: "Internal Server Error ",
@@ -44,7 +44,7 @@ exports.createOrder = async (req, res, next) => {
 
 // Get Single Orders
 exports.getSingleOrder = async (req, res, next) => {
-  console.log("req.parmas.id", req.params.id);
+  ("req.parmas.id", req.params.id);
   try {
     // const order = await OrderModel.findById(req.params.id);
 
@@ -53,7 +53,7 @@ exports.getSingleOrder = async (req, res, next) => {
       "name email"
     );
 
-    console.log("Single Order", order);
+    ("Single Order", order);
     if (!order) {
       return res.status(404).json({
         success: false,
@@ -76,12 +76,12 @@ exports.getSingleOrder = async (req, res, next) => {
 
 // login User Orders
 exports.getMyOrders = async (req, res, next) => {
-  console.log("order user id", req.user._id);
+  ("order user id", req.user._id);
   try {
     // db me wo orders find krne hn jis  me jo user ki id ha db me wo login user ki id se match kry
     const orders = await OrderModel.find({ user: req.user._id });
-    console.log("userID....", orders);
-    // console.log("orders", orders);
+    ("userID....", orders);
+    // ("orders", orders);
 
     return res.status(200).json({
       success: true,
@@ -107,7 +107,7 @@ exports.getAllOrdersByAdmin = async (req, res, next) => {
     const totalProductPrice = orders.reduce((accu, currentValue) => {
       return accu + currentValue.totalPrice;
     }, 0);
-    console.log(totalProductPrice);
+    (totalProductPrice);
 
     return res.status(200).json({
       success: true,
@@ -168,9 +168,9 @@ exports.updateOrderStatusByAdmin = async (req, res, next) => {
 };
 
 updateOrderStock = async (productId, quantity) => {
-  console.log(productId);
+  (productId);
   const product = await ProductModel.findById(productId);
-  console.log(product);
+  (product);
   product.stock = product.stock - quantity;
   await product.save();
 };

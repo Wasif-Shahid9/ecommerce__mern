@@ -17,6 +17,7 @@ const FORGOT_PASSWORD_FAIL = "FORGOT_PASSWORD_FAIL";
 const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
 const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
 const RESET_PASSWORD_FAIL = "RESET_PASSWORD_FAIL";
+const CLEAR_ERRORS = "CLEAR_ERRORS";
 
 export const userProfileReducer = (state = {}, action) => {
   switch (action.type) {
@@ -49,6 +50,11 @@ export const userProfileReducer = (state = {}, action) => {
         ...state,
         isUpdated: false,
       };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
 
     default:
       return state;
@@ -57,7 +63,7 @@ export const userProfileReducer = (state = {}, action) => {
 
 // Action Creator of User Profile
 // export const updateProfileAction = (userData) => {
-//   console.log("userDataAction", userData);
+//   ("userDataAction", userData);
 //   return async (dispatch, getState) => {
 //     try {
 //       dispatch({ type: UPDATE_PROFILE_REQUEST });
@@ -71,7 +77,7 @@ export const userProfileReducer = (state = {}, action) => {
 //           },
 //         }
 //       );
-//       console.log("updateProdfiledata", data);
+//       ("updateProdfiledata", data);
 
 //       dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: data.user });
 //     } catch (error) {
@@ -99,7 +105,7 @@ export const updateProfileAction = (userData) => {
         }
       );
 
-      // console.log("res: ", res);
+      // ("res: ", res);
       dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: res.data.success });
     } catch (error) {
       dispatch({
@@ -112,12 +118,12 @@ export const updateProfileAction = (userData) => {
 };
 
 export const updatePasswordAction = (userData) => {
-  console.log("passUserData", userData);
+  ("passUserData", userData);
   return async (dispatch, getState) => {
     try {
-      console.log("Before Request");
+      ("Before Request");
       dispatch({ type: UPDATE_PASSWORD_REQUEST });
-      console.log("After Request");
+      ("After Request");
 
       const res = await axios.put("api/v1/updateUserPassword", userData, {
         headers: {
@@ -127,12 +133,17 @@ export const updatePasswordAction = (userData) => {
 
       dispatch({ type: UPDATE_PASSWORD_SUCCESS, payload: res.data.success });
     } catch (error) {
-      console.log("error", error);
+      // (error.data.message);
+      ("error", error);
       dispatch({
         type: UPDATE_PASSWORD_FAIL,
         // payload: error,
-        payload: error.message,
+        payload: error.response.data.message,
       });
     }
   };
+};
+
+export const clearErrors = () => async (dispatch) => {
+  dispatch({ type: CLEAR_ERRORS });
 };

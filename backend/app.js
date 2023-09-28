@@ -3,6 +3,7 @@ const app = express();
 const cookieparser = require("cookie-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const path = require("path")
 
 /// Middelwares
 // const corsOptions = {
@@ -18,6 +19,10 @@ const dotenv = require("dotenv");
 
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
+// app.use("/uploads", express.static("uploads"));
+const _dirname = path.resolve();
+(_dirname)
+app.use("/uploads", express.static(path.join(_dirname, "/uploads")));
 
 app.use(express.json());
 app.use(cookieparser());
@@ -32,4 +37,5 @@ app.use("/api/v1", productRoute);
 app.use("/api/v1", userRoute);
 app.use("/api/v1", orderRoute);
 app.use("/api/v1", paymentRoute);
+
 module.exports = app;

@@ -5,6 +5,7 @@ import axios from "axios";
 const USER_LOGIN_REQ = "USER_LOGIN_REQ ";
 const USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS";
 const USER_LOGIN_FAIL = "USER_LOGIN_FAIL";
+const CLEAR_ERRORS = "CLEAR_ERRORS";
 
 // Reducer Functions
 
@@ -32,6 +33,11 @@ export const userReducerLogin = (state = initialState, action) => {
         loading: false,
         isAuthenticated: false,
         error: action.payload,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
       };
     default:
       return state;

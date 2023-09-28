@@ -15,7 +15,7 @@ const reviews = async (req, res, next) => {
       _id,
     };
   } catch (error) {
-    console.log(error);
+    (error);
   }
 };
 reviews();

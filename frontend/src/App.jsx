@@ -34,6 +34,8 @@ import AdminUpdateProduct from "./components/admin/AdminUpdateProduct";
 import AdminCreateProduct from "./components/admin/AdminCreateProduct";
 import AdminOrders from "./components/admin/orders/AdminOrders";
 import AdminUpdateOrder from "./components/admin/orders/AdminUpdateOrder";
+import UsersList from "./components/admin/user/UserLists";
+import AdminUpdateUser from "./components/admin/user/AdminUpdateUser";
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.userReducer);
   // const [clientSecret, setClientSecret] = useState("");
@@ -41,10 +43,10 @@ function App() {
   async function getStripeApiKey() {
     try {
       const { data } = await axios.get("/api/v1/stripeapikey");
-      // console.log("stripe key frontend...", data);
+      // ("stripe key frontend...", data);
       setStripeApiKey(data.stripeApiKey);
     } catch (error) {
-      console.log(error);
+      (error);
     }
   }
 
@@ -52,7 +54,7 @@ function App() {
 
   // useEffect(() => {
   //   const appdata = window.localStorage.getItem("User");
-  //   console.log("get user", appdata);
+  //   ("get user", appdata);
   //   if (user > 0 && Object.keys(appdata).length === 0) {
   //     window.localStorage.setItem("User", JSON.stringify(user));
   //     // dispatch({ type: LOGIN_SUCCESS, payload: user });
@@ -77,11 +79,6 @@ function App() {
   return (
     <>
       <Router>
-        {isAuthenticated ? (
-          <h1>Authenticated</h1>
-        ) : (
-          <h1>Error: Not Authenticated</h1>
-        )}
         <Header />
 
         <Routes>
@@ -232,7 +229,26 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* User Admin */}
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <UsersList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/user/:id"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <AdminUpdateUser />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
+        {/* <Footer /> */}
       </Router>
     </>
   );

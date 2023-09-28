@@ -44,20 +44,20 @@ export const createOrderReducer = (state = { order: {} }, action) => {
 
 //// Create Order Action
 export const createOrderAction = (order) => {
-  console.log("creatOrder", order);
+  ("creatOrder", order);
   return async (dispatch, getState) => {
     try {
-      console.log("before create Order");
+      ("before create Order");
       dispatch({ type: CREATE_ORDER_REQUEST });
       const { data } = await axios.post("/api/v1/order", order, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      console.log("create Reducer before Success", data);
+      ("create Reducer before Success", data);
 
       dispatch({ type: CREATE_ORDER_SUCCESS, payload: data });
-      console.log("createrOrder Reducer  After Success  data", data);
+      ("createrOrder Reducer  After Success  data", data);
     } catch (error) {
       dispatch({ type: CREATE_ORDER_FAIL, payload: error });
     }
@@ -97,16 +97,21 @@ export const myOrdersReducer = (state = { orders: {} }, action) => {
 export const myOrderAction = () => {
   return async (dispatch, getState) => {
     try {
-      console.log("Before Request  Orders Action");
+      ("Before Request  Orders Action");
       dispatch({ type: MY_ORDERS_REQUEST });
-      console.log("After Request Orders Action");
+      ("After Request Orders Action");
       // const { data } = await axios.get("/api/v1/orders/me");
       const res = await axios.get("/api/v1/orders/me");
-      console.log("ordersAction", res);
+      ("ordersAction", res);
       dispatch({ type: MY_ORDERS_SUCCESS, payload: res.data.orders });
     } catch (error) {
-      console.log("orderReducer  Erro", error.message);
+      ("orderReducer  Erro", error.message);
       dispatch({ type: MY_ORDERS_FAIL, payload: error.message });
     }
   };
+};
+
+
+export const clearErrors = () => async (dispatch) => {
+  dispatch({ type: CLEAR_ERRORS });
 };

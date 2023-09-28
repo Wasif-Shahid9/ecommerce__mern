@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -11,7 +12,9 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   newReviewAction,
   NEW_REVIEW_RESET,
+  clearErrors,
 } from "../../redux/reducersFun/reviewReducer/reviewReducer";
+import { getproductAction } from "../../redux/reducersFun/productReducer";
 export default function AlertDialog() {
   const [open, setOpen] = React.useState(false);
   const [rating, setRating] = useState(0);
@@ -19,6 +22,7 @@ export default function AlertDialog() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { error, success } = useSelector((state) => state.newReviewReducer);
+  ("sueecees", success);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -29,7 +33,7 @@ export default function AlertDialog() {
   };
 
   const reviewSubmitHandler = () => {
-    console.log("The Reivew Submited");
+    ("The Reivew Submited");
     const myForm = new FormData();
 
     myForm.set("rating", rating);
@@ -37,19 +41,21 @@ export default function AlertDialog() {
     myForm.set("productId", id);
 
     dispatch(newReviewAction(myForm));
-
     setOpen(false);
   };
+
   useEffect(() => {
     if (error) {
-      console.log("SubmitReviewError..", error);
-      // dispatch(clearErrors());
+      toast.error(error);
+      dispatch(clearErrors());
     }
+
     if (success) {
-      console.log("Review Submit Successfully");
+      toast.success("Review Submitted Successfully");
       dispatch({ type: NEW_REVIEW_RESET });
     }
-  }, [error, success, dispatch]);
+    dispatch(getproductAction(id));
+  }, [dispatch, error, id, success]);
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>

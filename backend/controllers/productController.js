@@ -6,7 +6,8 @@ const multer = require("multer");
 /// create Product POST
 
 const createProduct = catchAsyncError(async (req, res, next) => {
-  const products = await ProductModel.create(req.body);
+  const emmbedData = { ...req.body, image: req.fullFilePath };
+  const products = await ProductModel.create(emmbedData);
 
   res.status(201).json({
     success: true,
@@ -15,7 +16,7 @@ const createProduct = catchAsyncError(async (req, res, next) => {
 });
 
 const getAllProducts = catchAsyncError(async (req, res) => {
-  const resultPerPage = 5;
+  const resultPerPage = 10;
   const apifeature = new ApiFeatures(ProductModel.find(), req.query)
     .search()
     .filter()
@@ -139,8 +140,8 @@ const updateProduct = catchAsyncError(async (req, res, next) => {
 // const deleteProduct = async (req, res, next) => {
 //   try {
 //     let product = await ProductModel.findById(req.params.id);
-//     console.log("Parms", req.params.id);
-//     console.log("deleteProduct", product);
+//     ("Parms", req.params.id);
+//     ("deleteProduct", product);
 //     if (!product) {
 //       res.status(404).json({
 //         success: false,
@@ -196,7 +197,7 @@ const deleteProduct = async (req, res, next) => {
 /// GET Product Detail
 const getProductDetail = catchAsyncError(async (req, res, next) => {
   const product = await ProductModel.findById(req.params.id);
-  console.log("productDetail", Array.isArray(product.reviews));
+  ("productDetail", Array.isArray(product.reviews));
 
   if (!product) {
     return res.status(404).json({

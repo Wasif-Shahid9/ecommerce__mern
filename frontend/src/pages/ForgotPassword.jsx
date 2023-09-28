@@ -8,7 +8,7 @@ const ForgotPassword = () => {
   const { error, message, loading } = useSelector(
     (state) => state.forgotPasswordReducer
   );
-  console.log("forgot", message);
+  ("forgot", message);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -20,11 +20,11 @@ const ForgotPassword = () => {
   };
   useEffect(() => {
     if (message) {
-      console.log("forgotpass", message);
+      ("forgotpass", message);
       navigate("/profile");
     }
     if (error) {
-      console.log("forgot Password Error", error);
+      ("forgot Password Error", error);
     }
   }, [dispatch, message, error]);
   return (

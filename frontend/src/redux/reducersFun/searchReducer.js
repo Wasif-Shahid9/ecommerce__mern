@@ -1,6 +1,7 @@
 import axios from "axios";
 /// Constnt
 const SEARCH_PRODUCTS = "SEARCH_PRODUCTS";
+const CLEAR_ERRORS = "CLEAR_ERRORS";
 const initialState = {
   products: [],
 };
@@ -31,3 +32,7 @@ export function searchAction(keyword = "") {
     }
   };
 }
+
+export const clearErrors = () => async (dispatch) => {
+  dispatch({ type: CLEAR_ERRORS });
+};

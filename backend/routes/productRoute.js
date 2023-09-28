@@ -13,6 +13,7 @@ const {
   isAuthenticatedUser,
   authorizeRoles,
 } = require("../middlewares/authentication");
+const upload = require("../middlewares/multer");
 
 const router = express.Router();
 /// IsAuthenticated is me to sirf yh check kiya yh cookie ha or agr cookie ha to user login ha to usy in routes ki access mil gy gi
@@ -20,7 +21,7 @@ const router = express.Router();
 
 router.route("/getproducts").get(getAllProducts);
 // router.route("/search/:keyword").get(searchProducts);
-router.route("/createproducts").post(isAuthenticatedUser, createProduct);
+router.route("/createproducts").post(isAuthenticatedUser, upload, createProduct);
 router.route("/updateproduct/:id").put(isAuthenticatedUser, updateProduct);
 router
   .route("/admin/deleteproduct/:id")

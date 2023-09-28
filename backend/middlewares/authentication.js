@@ -13,7 +13,7 @@ const isAuthenticatedUser = async (req, res, next) => {
     }
     const decodeToken = JWT.verify(token, process.env.JWT_SECRET);
     req.user = await UserModel.findById(decodeToken.id);
-    // console.log('req.userauth', req.user)
+    // ('req.userauth', req.user)
     next();
   } catch (error) {
     res.status(500).json({
@@ -28,7 +28,7 @@ const authorizeRoles = (...roles) => {
   return (req, res, next) => {
     try {
       const { role } = req.user;
-      // console.log(role, req.user);
+      // (role, req.user);
       // const roleA = UserModel.find({ role });
 
       if (!roles.includes(role)) {

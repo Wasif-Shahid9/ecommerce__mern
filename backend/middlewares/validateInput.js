@@ -45,7 +45,7 @@ const validateInput = (inputSchema, schemaScope) => {
         errorDescription[`${errorKey}`] = errorMessage;
       });
 
-      console.log(errorDescription);
+      (errorDescription);
 
       // returning the response with an error message
       return res.status(httpsStatus.BAD_REQUEST).json({
@@ -90,7 +90,7 @@ const validateInput = (inputSchema, schemaScope) => {
         errorDescription[`${errorKey}`] = errorMessage;
       });
 
-      console.log(errorDescription);
+      (errorDescription);
 
       // returning the response with an error message
       return res.status(httpsStatus.BAD_REQUEST).json({
@@ -137,7 +137,7 @@ const validateInput = (inputSchema, schemaScope) => {
         errorDescription[`${errorKey}`] = errorMessage;
       });
 
-      console.log(errorDescription);
+      (errorDescription);
 
       // returning the response with an error message
       return res.status(httpsStatus.BAD_REQUEST).json({

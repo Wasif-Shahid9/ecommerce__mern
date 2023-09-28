@@ -5,7 +5,7 @@ const UserOption = ({ user }) => {
   if (!user) {
     return;
   }
-  console.log(user);
+  (user);
   return (
     <>
       <h1> user option </h1>

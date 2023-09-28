@@ -95,10 +95,14 @@ export const adminDeleteOrderAction = (id) => async (dispatch) => {
 
     dispatch({ type: DELETE_ORDER_SUCCESS, payload: data.success });
   } catch (error) {
-    console.log("adminOrderActionError", error);
+    ("adminOrderActionError", error);
     dispatch({
       type: DELETE_ORDER_FAIL,
       payload: error.message,
     });
   }
+};
+
+export const clearErrors = () => async (dispatch) => {
+  dispatch({ type: CLEAR_ERRORS });
 };

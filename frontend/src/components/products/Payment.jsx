@@ -39,10 +39,10 @@ const Payment = () => {
     totalPrice: orderInfo.totalPrice,
   };
 
-  console.log("Payment Order", order);
+  ("Payment Order", order);
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("Click On payment Start");
+    ("Click On payment Start");
 
     payBtn.current.disabled = true;
 
@@ -58,7 +58,7 @@ const Payment = () => {
         paymentData,
         config
       );
-      console.log("paymentData..", data);
+      ("paymentData..", data);
 
       const client_secret = data.client_secret;
 
@@ -83,7 +83,7 @@ const Payment = () => {
 
       if (result.error) {
         payBtn.current.disabled = false;
-        console.log("paymentErrro...", error);
+        ("paymentErrro...", error);
       } else {
         if (result.paymentIntent.status === "succeeded") {
           order.paymentInfo = {
@@ -94,20 +94,20 @@ const Payment = () => {
           dispatch(createOrderAction(order));
 
           navigate("/ordersuccess");
-          console.log("Click On payment After sucess");
+          ("Click On payment After sucess");
         } else {
-          console.log("There's some issue while processing payment ");
+          ("There's some issue while processing payment ");
         }
       }
     } catch (error) {
       payBtn.current.disabled = false;
-      console.log("payment error", error);
+      ("payment error", error);
     }
   };
 
   useEffect(() => {
     if (error) {
-      console.log(error);
+      (error);
     }
   }, []);
 

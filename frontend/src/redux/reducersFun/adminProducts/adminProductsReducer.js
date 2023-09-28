@@ -2,6 +2,7 @@ import axios from "axios";
 const ADMIN_PRODUCT_REQUEST = "ADMIN_PRODUCT_REQUEST";
 const ADMIN_PRODUCT_SUCCESS = "ADMIN_PRODUCT_SUCCESS";
 const ADMIN_PRODUCT_FAIL = "ADMIN_PRODUCT_FAIL";
+const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const adminProductsReducer = (state = { products: [] }, action) => {
   switch (action.type) {
     case ADMIN_PRODUCT_REQUEST:
@@ -19,11 +20,11 @@ export const adminProductsReducer = (state = { products: [] }, action) => {
         loading: false,
         error: action.payload,
       };
-    // case CLEAR_ERRORS:
-    //   return {
-    //     ...state,
-    //     error: null,
-    //   };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
 
     default:
       return state;
@@ -35,6 +36,7 @@ export function adminProductAction() {
     try {
       dispatch({ type: ADMIN_PRODUCT_REQUEST });
       const products = await axios.get("/api/v1/admin/products");
+      ("admin products", products);
 
       dispatch({
         type: ADMIN_PRODUCT_SUCCESS,
@@ -45,3 +47,7 @@ export function adminProductAction() {
     }
   };
 }
+
+export const clearErrors = () => async (dispatch) => {
+  dispatch({ type: CLEAR_ERRORS });
+};

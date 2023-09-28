@@ -6,16 +6,17 @@ import Loader from "../loader/Loader";
 import { Link } from "react-router-dom";
 
 const OrderDetails = () => {
+  const HOST = "  http://localhost:4000";
   const dispatch = useDispatch();
   const { id } = useParams();
-  console.log("paramsOrderDetail.........", id);
+  ("paramsOrderDetail.........", id);
   const { loading, error, order } = useSelector(
     (state) => state.orderDetailsReducer
   );
-  console.log("OrderDetail Order..", order);
+  ("OrderDetail Order..", order);
   useEffect(() => {
     if (error) {
-      console.log("OrderDetailError", error);
+      ("OrderDetailError", error);
     }
     dispatch(getOrderDetailsAction(id));
   }, [dispatch, id, error]);
@@ -176,28 +177,29 @@ const OrderDetails = () => {
               <p className="text-lg font-semibold">Order Items:</p>
               <div className="orderDetailsCartItemsContainer">
                 {order.orderItems &&
-                  order.orderItems.map((item) => (
-                    <div
-                      key={item.product}
-                      className="flex items-center space-x-4 mt-2"
-                    >
-                      <img
-                        src={item.image}
-                        alt="Product"
-                        className="w-16 h-16"
-                      />
-                      <Link
-                        to={`/product/${item.product}`}
-                        className="text-blue-500 hover:underline"
-                      >
-                        {item.name}
-                      </Link>{" "}
-                      <span>
-                        {item.quantity} X ${item.price} ={" "}
-                        <b>${item.price * item.quantity}</b>
-                      </span>
-                    </div>
-                  ))}
+                  order.orderItems.map((item) => {
+                    ("item", item);
+                    return (
+                      <>
+                        <div
+                          key={item.product}
+                          className="flex items-center space-x-4 mt-2"
+                        >
+                          <Link
+                            to={`/product/${item.product}`}
+                            className="text-blue-500 hover:underline"
+                          >
+                            {item.name}
+                          </Link>{" "}
+                          <span>
+                            {item.quantity} X ${item.price} ={" "}
+                            <b>${item.price * item.quantity}</b>
+                          </span>
+                        </div>
+                        ;
+                      </>
+                    );
+                  })}
               </div>
             </div>
           </div>

@@ -51,7 +51,7 @@ export function getproductAction(keyword = "", currentPage) {
       const { data } = await axios.get(
         `/api/v1/getproducts?keyword=${keyword}&page=${currentPage}`
       );
-      console.log("productAcion...", data.products);
+      ("productAcion...", data.products);
 
       dispatch({ type: PRODUCTAPI_SUCCESS, payload: data.products });
     } catch (error) {

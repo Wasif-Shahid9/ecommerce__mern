@@ -63,7 +63,7 @@ function DrawerSideBar(props) {
       <Divider />
       <List>
         {menuItems.map((item, index) => (
-          <ListItem key={item.text} disablePadding>
+          <ListItem key={index} disablePadding>
             <ListItemButton component={Link} to={item.link}>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}

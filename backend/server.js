@@ -1,7 +1,7 @@
 // UnCaught Error
 process.on("uncaughtException", (error) => {
-  console.log(`Error: ${error.message}`);
-  console.log(
+  (`Error: ${error.message}`);
+  (
     "Shuting Down Server due to UnCaught Error Something is missing "
   );
   process.exit(1);
@@ -18,14 +18,17 @@ dotenv.config({ path: "backend/config/config.env" });
 databaseConnect();
 
 const server = app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port: ${process.env.PORT}`);
+  (`Server is running on port: ${process.env.PORT}`);
 });
 
 // UnhandleError
 process.on("unhandledRejection", (error) => {
-  console.log(`Error ${error}`);
-  console.log("Shuting Down the server due to unhandle Promise Rejection");
+  (`Error ${error}`);
+  ("Shuting Down the server due to unhandle Promise Rejection");
   server.close(() => {
     process.exit(1);
   });
 });
+
+
+// DB_URL = mongodb://localhost:27017/Ecommerce

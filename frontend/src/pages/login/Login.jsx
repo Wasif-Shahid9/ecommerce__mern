@@ -3,8 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import { userActionLogin } from "../../redux/reducersFun/userReducer/userLoginReducer";
 import { useSelector, useDispatch } from "react-redux";
-
-import { login } from "../../redux/reducersFun/userReducer/userReducer";
+import {
+  login,
+  clearErrors,
+} from "../../redux/reducersFun/userReducer/userReducer";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const { error, loading, isAuthenticated } = useSelector(
@@ -16,26 +20,38 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // const handleSubmit = (e) => {
+  // const handleSubmit = async (e) => {
   //   e.preventDefault();
   //   const userData = {
   //     email,
   //     password,
   //   };
-  //   console.log(userData);
-  //   dispatch(userActionLogin(userData));
+  //   try {
+  //     dispatch(login(userData));
+  //     toast.success("Login successful");
+  //   } catch (error) {
+  //     toast.error(`Login Error: ${error.message}`);
+  //   }
   // };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const userData = {
       email,
       password,
     };
-
     dispatch(login(userData));
-    // localStorage.setItem("user", JSON.stringify(userData));
   };
+  const redirect = location.search ? location.search.split("=")[1] : "/";
+  useEffect(() => {
+    if (error) {
+      toast.error(`Login Error: ${error}`);
+      dispatch(clearErrors());
+    }
 
+    if (isAuthenticated) {
+      navigate(redirect);
+    }
+  }, [dispatch, error, toast, isAuthenticated, redirect]);
   return (
     <>
       {/* <div>
@@ -70,10 +86,9 @@ const Login = () => {
         )}
       </div> */}
       <div className="container mx-auto py-8">
+        <ToastContainer position="top-right" autoClose={3000} />
         {loading ? (
           <p>Loading...</p>
-        ) : error ? (
-          <p className="text-red-800">Login Error: {error}</p>
         ) : (
           <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
             <form className="px-6 py-8" onSubmit={handleSubmit}>

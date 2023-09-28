@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { register } from "../../redux/reducersFun/userReducer/userReducer";
 import {
-  userActionRegister,
-  userReducerRegister,
-} from "../../redux/reducersFun/userReducer/userRegisterReducer";
+  register,
+  clearErrors,
+} from "../../redux/reducersFun/userReducer/userReducer";
+import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const { error, loading } = useSelector((state) => state.userReducer);
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const [name, setName] = useState("");
@@ -22,9 +24,16 @@ const Register = () => {
       email,
       password,
     };
-
     dispatch(register(userData));
+    navigate("/");
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(`Register Error: ${error}`);
+      dispatch(clearErrors());
+    }
+  }, [dispatch, error, toast]);
   return (
     <>
       {/* <div>
@@ -64,6 +73,7 @@ const Register = () => {
           </div>
         )}
       </div> */}
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="container mx-auto py-8">
         {loading ? (
           <p>Loading...</p>

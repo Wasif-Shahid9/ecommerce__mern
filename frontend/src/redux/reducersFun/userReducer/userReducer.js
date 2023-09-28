@@ -1,4 +1,6 @@
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
@@ -130,28 +132,12 @@ export const login = (userData) => {
       dispatch({ type: LOGIN_SUCCESS, payload: data.user });
       // localStorage.setItem("User", JSON.stringify(userData));
     } catch (error) {
+      ("login Error", error);
+
       dispatch({ type: LOGIN_FAIL, payload: error.response.data.message });
     }
   };
 };
-
-// export const login = (userData) => async (dispatch) => {
-//   try {
-//     dispatch({ type: LOGIN_REQUEST });
-
-//     const config = { headers: { "Content-Type": "application/json" } };
-
-//     const { data } = await axios.post(
-//       `api/v1/login`,
-//       userData,
-//       config
-//     );
-//
-//     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
-//   } catch (error) {
-//     dispatch({ type: LOGIN_FAIL, payload: error.response.data.message });
-//   }
-// };
 
 // Register
 export const register = (userData) => async (dispatch) => {
@@ -194,4 +180,8 @@ export const logout = () => {
       dispatch({ type: LOGOUT_FAIL, payload: error.response.data.message });
     }
   };
+};
+
+export const clearErrors = () => async (dispatch) => {
+  dispatch({ type: CLEAR_ERRORS });
 };

@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { updatePasswordAction } from "../redux/reducersFun/userReducer/userProfileReducer";
+import {
+  updatePasswordAction,
+  clearErrors,
+} from "../redux/reducersFun/userReducer/userProfileReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { UPDATE_PROFILE_RESET } from "../redux/reducersFun/userReducer/userReducer";
+import { toast, ToastContainer } from "react-toastify";
+import Loader from "../components/loader/Loader";
 
 const UpdatePassword = () => {
   const dispatch = useDispatch();
   const { error, isUpdated, loading } = useSelector(
     (state) => state.userProfileReducer
   );
-  // console.log("errorPasswrodCom", error);
-  // console.log("loading", loading);
+
+  ("errorPasswrodCom", error);
+  // ("loading", loading);
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -23,17 +29,20 @@ const UpdatePassword = () => {
       confirmPassword,
     };
 
-    console.log("userDataUpdatePAssword", userData);
+    ("userDataUpdatePAssword", userData);
     // if (localStorage.getItem("user")) {
     //   dispatch(updatePasswordAction(userData));
     // }
     dispatch(updatePasswordAction(userData));
   };
   useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
     if (isUpdated) {
-      console.log("User  Update Successfuly");
+      toast.success("Profile Updated Successfully");
 
-      // navigate("/profile");
       dispatch({
         type: UPDATE_PROFILE_RESET,
       });
@@ -42,9 +51,9 @@ const UpdatePassword = () => {
   return (
     <div>
       {loading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p>Error: {error}</p>
+        <p>
+          <Loader />
+        </p>
       ) : (
         <div className="container mx-auto py-8">
           <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
