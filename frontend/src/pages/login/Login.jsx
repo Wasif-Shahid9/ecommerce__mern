@@ -41,7 +41,7 @@ const Login = () => {
     };
     dispatch(login(userData));
   };
-  const redirect = location.search ? location.search.split("=")[1] : "/";
+  // const redirect = location.search ? location.search.split("=")[1] : "/";
   useEffect(() => {
     if (error) {
       toast.error(`Login Error: ${error}`);
@@ -49,9 +49,9 @@ const Login = () => {
     }
 
     if (isAuthenticated) {
-      navigate(redirect);
+      // navigate(redirect);
     }
-  }, [dispatch, error, toast, isAuthenticated, redirect]);
+  }, [dispatch, error, toast, isAuthenticated]);
   return (
     <>
       {/* <div>

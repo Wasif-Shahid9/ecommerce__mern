@@ -8,7 +8,7 @@ const ConfirmOrder = () => {
   const HOST = "  http://localhost:4000";
   const navigate = useNavigate();
   const { shippingInfo, cartItems } = useSelector((state) => state.cartReducer);
-  ("cartItems", cartItems);
+  "cartItems", cartItems;
 
   const { user } = useSelector((state) => state.userReducer);
 
@@ -77,11 +77,11 @@ const ConfirmOrder = () => {
             <div>
               <div>
                 <p>Subtotal:</p>
-                <span>₹{subtotal}</span>
+                <span>${subtotal}</span>
               </div>
               <div>
                 <p>Shipping Charges:</p>
-                <span>₹{shippingCharges}</span>
+                <span>${shippingCharges}</span>
               </div>
             </div>
 
@@ -89,7 +89,7 @@ const ConfirmOrder = () => {
               <p>
                 <b>Total:</b>
               </p>
-              <span>₹{totalPrice}</span>
+              <span>${totalPrice}</span>
             </div>
 
             <button onClick={proceedToPayment}>Proceed To Payment</button>
