@@ -10,7 +10,6 @@ import Search from "./pages/Search";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import { useSelector, useDispatch } from "react-redux";
-import UserOption from "./pages/userOption";
 import store from "./redux/store/store";
 import { loadUser } from "./redux/reducersFun/userReducer/userReducer";
 import Profile from "./pages/Profile";
